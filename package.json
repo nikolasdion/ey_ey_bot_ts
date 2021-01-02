@@ -1,0 +1,23 @@
+{
+  "name": "eyeybot",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dion Susanto",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.17"
+  },
+  "engines": {
+    "node": "15.4.0"
+  }
+}
