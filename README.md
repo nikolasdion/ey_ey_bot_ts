@@ -1,0 +1,1 @@
+A rewrite of [ey_ey_bot](https://github.com/nikolasdion/ey_ey_bot) in TypeScript, just as a practice to learn the language. The program itself is a very simple Telegram bot that echoes  messages in chats.
