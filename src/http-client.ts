@@ -10,7 +10,20 @@ export type Message = {
   updateId: number | undefined;
 };
 
-export const verifyApiToken = async (apiToken: string | undefined) => {
+/** Update from server. */
+type Update = {
+  message: {
+    chat: {
+      id: number;
+    };
+    text: string | undefined;
+  };
+  update_id: number | undefined;
+};
+
+export const verifyApiToken = async (
+  apiToken: string | undefined
+): Promise<string> => {
   if (apiToken === undefined) {
     throw Error("Trying to verify token but token is not defined.");
   }
@@ -38,7 +51,7 @@ export const sendMessage = async (
   apiToken: string,
   chatId: number,
   text: string
-) => {
+): Promise<void> => {
   const url = createUrl(apiToken) + "/sendMessage";
   const params = {
     chat_id: chatId,
@@ -62,7 +75,7 @@ export const sendMessage = async (
 export const getLatestMessageSince = async (
   apiToken: string,
   prevMessage: Message | undefined
-) => {
+): Promise<Message> => {
   const update = await getLatestUpdateSince(apiToken, prevMessage);
   return {
     chatId: update.message.chat.id,
@@ -74,9 +87,10 @@ export const getLatestMessageSince = async (
 const getLatestUpdateSince = async (
   apiToken: string,
   prevMessage: Message | undefined
-) => {
+): Promise<Update> => {
   console.log("Getting latest update ...");
 
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const updates = await getUpdatesSince(apiToken, prevMessage);
 
@@ -93,20 +107,18 @@ const getLatestUpdateSince = async (
 const getUpdatesSince = (
   apiToken: string,
   prevMessage: Message | undefined
-) => {
+): Promise<Update[] | null> => {
   const params = {
     timeout: 100,
     offset: prevMessage?.updateId ? prevMessage.updateId + 1 : 0,
   };
 
   const url = createUrl(apiToken) + "/getUpdates";
-  let update;
 
   return axios
     .get(url, { params })
     .then((response) => {
       if (response?.data?.result) {
-        update = response.data.result;
         return response.data.result;
       } else {
         console.log(

@@ -1,15 +1,10 @@
 // List of strings which triggers an echo response
 const ECHOED_WORDS = ["ey", "ea", "gelow", "anying"];
 
-export const getReply = (text: string | undefined) => {
-  if (!text) {
-    return null;
-  } else {
-    return getEcho(text);
-  }
-};
+export const getReply = (text: string | undefined): string | null =>
+  text ? getEcho(text) : null;
 
-const getEcho = (text: string) => {
+const getEcho = (text: string): string | null => {
   let echo = null;
 
   ECHOED_WORDS.some((word) => {
@@ -23,11 +18,7 @@ const getEcho = (text: string) => {
   return echo;
 };
 
-const getEchoMatch = (text: string, wordToMatch: string) => {
+const getEchoMatch = (text: string, wordToMatch: string): string | null => {
   const truncatedText = text.substring(0, wordToMatch.length);
-  if (truncatedText.toLowerCase() === wordToMatch) {
-    return truncatedText;
-  } else {
-    return null;
-  }
+  return truncatedText.toLowerCase() === wordToMatch ? truncatedText : null;
 };
